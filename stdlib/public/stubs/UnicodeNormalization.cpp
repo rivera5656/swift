@@ -189,6 +189,33 @@ swift::_swift_stdlib_unicode_compare_utf8_utf8(const unsigned char *LeftString,
   return Diff;
 }
 
+void *swift::_swift_stdlib_unicodeCollationIterator_create(
+    const __swift_uint16_t *Str, __swift_uint32_t Length) {
+  UErrorCode ErrorCode = U_ZERO_ERROR;
+#if defined(__CYGWIN__) || defined(_MSC_VER)
+  UCollationElements *CollationIterator = ucol_openElements(
+    Collator, reinterpret_cast<const UChar *>(Str), Length, ErrorCode);
+#else
+  UCollationElements *CollationIterator = ucol_openElements(
+    Collator, Str, Length, ErrorCode);
+#endif
+  if (U_FAILURE(ErrorCode)) {
+    swift::crash("_swift_stdlib_unicodeCollationIterator_create: ucol_openElements() failed.");
+  }
+  return CollationIterator;
+}
+
+SWIFT_RUNTIME_STDLIB_INTERFACE
+__swift_intptr_t swift::_swift_stdlib_unicodeCollationIterator_next(
+    void *CollationIterator) {
+}
+
+SWIFT_RUNTIME_STDLIB_INTERFACE
+void *swift::_swift_stdlib_unicodeCollationIterator_delete(
+    void *CollationIterator) {
+  ucol_closeElements(CollationIterator);
+}
+
 // These functions use murmurhash2 in its 32 and 64bit forms, which are
 // differentiated by the constants defined below. This seems like a good choice
 // for now because it operates efficiently in blocks rather than bytes, and 

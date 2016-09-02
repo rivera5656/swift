@@ -88,6 +88,18 @@ _swift_stdlib_unicode_hash_ascii(const unsigned char *Str,
                                  __swift_int32_t Length);
 
 SWIFT_RUNTIME_STDLIB_INTERFACE
+void *_swift_stdlib_unicodeCollationIterator_create(
+    const __swift_uint16_t *Str, __swift_uint32_t Length);
+
+SWIFT_RUNTIME_STDLIB_INTERFACE
+__swift_intptr_t _swift_stdlib_unicodeCollationIterator_next(
+    void *CollationIterator);
+
+SWIFT_RUNTIME_STDLIB_INTERFACE
+void *_swift_stdlib_unicodeCollationIterator_delete(
+    void *CollationIterator);
+
+SWIFT_RUNTIME_STDLIB_INTERFACE
 __swift_int32_t _swift_stdlib_unicode_strToUpper(
   __swift_uint16_t *Destination, __swift_int32_t DestinationCapacity,
   const __swift_uint16_t *Source, __swift_int32_t SourceLength);
